@@ -1,0 +1,18 @@
+@startuml
+
+title MES Caching (Write-Behind) - Изменение статуса заказа
+
+actor Operator as op
+participant "MES" as mes
+participant "MES API" as app
+participant "Cache" as cache
+participant "Database" as db
+
+op -> mes: передать на производство
+mes -> app: POST /order-api/v1/orders/%orderId%
+app -> cache: обновление кеша заказов
+cache -> app: результат операции
+cache --> db: обновление БД
+db --> cache: committed
+app -> mes: результат операции
+@enduml

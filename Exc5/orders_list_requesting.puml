@@ -1,0 +1,15 @@
+@startuml
+
+title MES Caching (Write-Behind) - Чтение заказов
+
+actor Operator as op
+participant "MES" as mes
+participant "MES API" as app
+participant "Cache" as cache
+
+op -> mes: Страницу заказов
+mes -> app: GET /order-api/v1/orders?startDateOrder=datetime
+app -> cache: запрос на получение данных по интервалу времени
+cache -> app: возвращаем список заказов
+app --> mes: возвращаем список заказов
+@enduml
